@@ -28,7 +28,6 @@ jobs:
       - name: Print Active Account
         run: gcloud auth list
 
-
       - run: gcloud --quiet auth configure-docker
 
 
