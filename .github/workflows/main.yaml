@@ -25,6 +25,10 @@ jobs:
           service_account_key: ${{ secrets.GKE_SA_KEY }}
           export_default_credentials: true
 
+      - name: Print Active Account
+        run: gcloud auth list
+
+
       - run: gcloud --quiet auth configure-docker
 
 
