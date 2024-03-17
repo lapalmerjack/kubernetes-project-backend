@@ -28,7 +28,6 @@ jobs:
       - run: gcloud --quiet auth configure-docker
 
       - name: Authenticate with Google Cloud
-        run: gcloud auth login
 
       - run: gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
 
