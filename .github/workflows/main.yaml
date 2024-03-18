@@ -38,11 +38,10 @@ jobs:
           location: ${{ env.GKE_ZONE }}
 
       - name: Build
-        run: |
-          DOCKER_BUILDKIT=1 docker build \
-            --tag "$GKE_ZONE-docker.pkg.dev/$PROJECT_ID/$GKE_REPO/$IMAGE:$IMAGE_TAG" \
-            --build-arg GITHUB_SHA="$GITHUB_SHA" \
-            --build-arg GITHUB_REF="$GITHUB_REF"
+        run: |-
+          docker build \
+            --tag "gcr.io/$PROJECT_ID/$IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
+            .
 
       - name: Publish
         run: |
