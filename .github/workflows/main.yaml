@@ -31,13 +31,15 @@ jobs:
           echo "GKE_SA_KEY: ${{ secrets.GKE_SA_KEY }}"
 
 
-      - name: Print Active Account
-        run: gcloud auth list
-
       - run: gcloud --quiet auth configure-docker
 
 
-      - run: gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+      - uses: google-github-actions/get-gke-credentials@db150f2cc60d1716e61922b832eae71d2a45938f
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+          credentials: ${{ secrets.GKE_SA_KEY }}
+
 
       - name: Build
         run: |-
