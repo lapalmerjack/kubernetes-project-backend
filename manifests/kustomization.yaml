@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - deployment-backend.yaml
+  - deployment.yaml
 images:
   - name: BACKEND/IMAGE
     newName: lapalmerjack/kubernetes-project:2.10v1
