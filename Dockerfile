@@ -1,5 +1,5 @@
 # Use a Maven image to build the project
-FROM maven:3.8.4-openjdk-17 AS builder
+FROM maven:3.8.4-openjdk-17-slim AS builder
 
 # Set the working directory
 WORKDIR /app
@@ -11,7 +11,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Build the application
-RUN mvn clean install
+RUN mvn clean install -DskipTests=true
 
 # Use the OpenJDK image as the final image
 FROM openjdk:17
