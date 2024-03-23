@@ -4,4 +4,4 @@ resources:
   - deployment.yaml
 images:
   - name: BACKEND/IMAGE
-    newName: backend
+    newName: gcr.io/dwk-gke-416915/backend
