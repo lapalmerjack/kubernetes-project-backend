@@ -32,18 +32,10 @@ jobs:
       - run: gcloud --quiet auth configure-docker
 
       - name: Get GKE credentials
-        uses: google-github-actions/get-gke-credentials@v1
+        uses: google-github-actions/get-gke-credentials@v2
         with:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
-
-            # Set the Kubernetes context
-      - name: Set Kubernetes context
-        run: gcloud container clusters get-credentials ${CLUSTER_NAME} --zone ${ZONE} --project ${PROJECT_ID}
-        env:
-          PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-          CLUSTER_NAME: ${{ env.GKE_CLUSTER }}
-          ZONE: ${{ env.GKE_ZONE }}
 
       - name: Switch to namespace
         run: kubectl config set-context --current --namespace=kubernetes-project
