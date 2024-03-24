@@ -62,6 +62,6 @@ jobs:
           kubectl config set-context --current --namespace=${GITHUB_REF#refs/heads/}
           kustomize edit set namespace ${GITHUB_REF#refs/heads/}
           kustomize edit set image gcr.io/$PROJECT_ID/$IMAGE=gcr.io/$PROJECT_ID/$IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
-          kustomize apply -k .
+          kubectl apply -k .
           kubectl rollout status deployment $IMAGE
           kubectl get services -o wide
