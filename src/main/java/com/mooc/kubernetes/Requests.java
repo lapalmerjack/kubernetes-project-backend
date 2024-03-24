@@ -41,6 +41,12 @@ public class Requests {
         return "Server started in port " + serverPort;
     }
 
+    @GetMapping("/health")
+    public String getHealth() {
+
+        return "call from frontend!";
+    }
+
     @PostMapping("/add")
     public ResponseEntity<NoteEntity> addToDo (@RequestBody NoteEntity toDo) {
         System.out.println(toDo.getNote() + " is being sent from frontend");
