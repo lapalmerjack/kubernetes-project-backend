@@ -46,7 +46,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: kubernetes-project
   name: backend-service
 spec:
   type: NodePort
