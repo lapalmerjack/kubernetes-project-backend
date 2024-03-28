@@ -5,7 +5,7 @@ resources:
   - postgres-secrets.yaml
   - database-config.yaml
   - statefulset.yaml
-  - backend-hpa
+  - horizontalpodautoscaler.yaml
 images:
   - name: BACKEND/IMAGE
     newName: gcr.io/dwk-gke-416915/backend
