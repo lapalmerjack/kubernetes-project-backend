@@ -16,10 +16,6 @@ spec:
       containers:
         - name: backend
           image: BACKEND/IMAGE
-          resources:
-            limits:
-              cpu: "150m"
-              memory: "100Mi"
           ports:
             - containerPort: 8080
           readinessProbe:
