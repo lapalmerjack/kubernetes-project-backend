@@ -39,7 +39,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - exec pg_isready -U username
+                - exec pg_isready -U postgres
               initialDelaySeconds: 30
               periodSeconds: 15
           env:
