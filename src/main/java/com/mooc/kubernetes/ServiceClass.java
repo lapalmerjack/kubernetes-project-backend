@@ -43,7 +43,7 @@ public class ServiceClass  {
     }
 
     public List<NoteEntity> getAllNotes() {
-
+        System.out.println("Getting all notes");
       return noteRepository.findAll();
     }
 

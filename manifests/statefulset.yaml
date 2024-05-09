@@ -18,6 +18,8 @@ metadata:
 spec:
   serviceName: database-svc
   replicas: 2
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: database
@@ -32,6 +34,14 @@ spec:
           ports:
             - name: postgres
               containerPort: 5432
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - exec pg_isready -U postgres
+              initialDelaySeconds: 30
+              periodSeconds: 15
           env:
             - name: POSTGRES_USER
               valueFrom:

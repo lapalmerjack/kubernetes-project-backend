@@ -63,6 +63,8 @@ public class Requests {
 
         List<NoteEntity> notes = service.getAllNotes();
 
+        System.out.println("Retrieved todos");
+
 
         return new ResponseEntity<>(notes, HttpStatus.OK);
     }
