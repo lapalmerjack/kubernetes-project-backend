@@ -17,7 +17,7 @@ metadata:
   name: database-ss
 spec:
   serviceName: database-svc
-  replicas: 2
+  replicas: 1
   updateStrategy:
     type: RollingUpdate
   selector:
@@ -39,7 +39,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - exec pg_isready -U postgres
+                - exec pg_isready -U username
               initialDelaySeconds: 30
               periodSeconds: 15
           env:
@@ -68,4 +68,4 @@ spec:
         storageClassName: "standard"
         resources:
           requests:
-            storage: 100Mi
+            storage: 1Gi
