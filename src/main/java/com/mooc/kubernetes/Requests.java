@@ -1,9 +1,11 @@
 package com.mooc.kubernetes;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,9 @@ public class Requests {
 
     private List<NoteEntity> toDos = new ArrayList<>();
 
+    @Autowired
+    private DatabaseHealthIndicator databaseHealthIndicator;
+
 
 
     @GetMapping("/")
@@ -42,9 +47,14 @@ public class Requests {
     }
 
     @GetMapping("/health")
-    public String getHealth() {
+    public void readiness() throws SQLException {
+        if(databaseHealthIndicator.health().getStatus().equals(Status.UP)) {
+            return;
+        } else {
+            throw new SQLException("Database is not available");
+        }
 
-        return "call from frontend!";
+
     }
 
     @PostMapping("/add")
