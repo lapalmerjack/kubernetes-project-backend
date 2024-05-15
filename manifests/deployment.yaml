@@ -46,9 +46,9 @@ metadata:
   name: backend-service
   labels:
     name: backend-service
-    annotations:
-      prometheus.io/port: "metrics"
-      prometheus.io/scrape: "true"
+  annotations:
+    prometheus.io/port: "metrics"
+    prometheus.io/scrape: "true"
 
 spec:
   type: NodePort
@@ -67,7 +67,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      name: backend-service
+      name: backend
   endpoints:
     - port: backend-metrics
       path: /metrics
