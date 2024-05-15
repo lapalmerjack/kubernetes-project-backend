@@ -46,6 +46,10 @@ metadata:
   name: backend-service
   labels:
     name: backend-service
+    annotations:
+      prometheus.io/port: "metrics"
+      prometheus.io/scrape: "true"
+
 spec:
   type: NodePort
   selector:
@@ -59,9 +63,7 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: monitor
-  labels:
-    monitor: ""
+  name: backend-monitor-metrics
 spec:
   selector:
     matchLabels:
