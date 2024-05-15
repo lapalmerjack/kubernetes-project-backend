@@ -49,6 +49,7 @@ public class Requests {
     @GetMapping("/health")
     public void readiness() throws SQLException {
         if(databaseHealthIndicator.health().getStatus().equals(Status.UP)) {
+            System.out.println("HEALTH CHECK PASSED");
             return;
         } else {
             throw new SQLException("Database is not available");

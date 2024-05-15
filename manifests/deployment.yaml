@@ -19,13 +19,11 @@ spec:
           ports:
             - containerPort: 8080
           readinessProbe:
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - exec pg_isready -U $USERNAME -h database-svc -d $DATABASE_NAME -w $PASSWORD && echo "Connected to database"
+            httpGet:
+              path: /health
+              port: 8080
             initialDelaySeconds: 60
-            periodSeconds: 20
+            periodSeconds: 50
           env:
             - name: USERNAME
               valueFrom:
