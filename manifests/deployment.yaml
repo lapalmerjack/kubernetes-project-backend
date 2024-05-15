@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: kubernetes-project
   name: backend
 spec:
   replicas: 2
@@ -55,3 +54,18 @@ spec:
     - port: 2345
       protocol: TCP
       targetPort: 8080
+      name: "backend-metrics"
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: monitor
+  labels:
+    monitor
+spec:
+  matchLabels:
+    name: backend-service
+endpoints:
+  - port: m-http
+    path: /metrics
