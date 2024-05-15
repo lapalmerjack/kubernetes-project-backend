@@ -19,9 +19,11 @@ spec:
           ports:
             - containerPort: 8080
           readinessProbe:
-            httpGet:
-              path: /health
-              port: 8080
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - exec pg_isready -U $USERNAME -d DATABASE_URL -w $PASSWORD
             initialDelaySeconds: 60
             periodSeconds: 20
           env:
