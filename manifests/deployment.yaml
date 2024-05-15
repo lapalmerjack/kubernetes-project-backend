@@ -23,7 +23,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - exec pg_isready -U $USERNAME -d DATABASE_URL -w $PASSWORD
+                - exec pg_isready -U $USERNAME -h database-svc -d $DATABASE_NAME -w $PASSWORD && echo "Connected to database"
             initialDelaySeconds: 60
             periodSeconds: 20
           env:
