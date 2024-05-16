@@ -47,8 +47,10 @@ metadata:
   labels:
     name: backend
   annotations:
-    prometheus.io/port: "9090"
-    prometheus.io/scrape: "true"
+    annotations:
+      prometheus.io/path: "/actuator/prometheus"
+      prometheus.io/port: "8080"
+      prometheus.io/scrape: "true"
 spec:
   type: NodePort
   selector:
@@ -58,15 +60,3 @@ spec:
       protocol: TCP
       targetPort: 8080
       name: backend-metrics
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: backend-monitor-metrics
-spec:
-  selector:
-    matchLabels:
-      app: backend
-  endpoints:
-    - port: backend-metrics
-      path: "/actuator/prometheus"
