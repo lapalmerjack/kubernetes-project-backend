@@ -45,12 +45,7 @@ kind: Service
 metadata:
   name: backend-service
   labels:
-    name: backend
-  annotations:
-    annotations:
-      prometheus.io/path: "/actuator/prometheus"
-      prometheus.io/port: "8080"
-      prometheus.io/scrape: "true"
+    app: backend
 spec:
   type: NodePort
   selector:
@@ -59,4 +54,20 @@ spec:
     - port: 2345
       protocol: TCP
       targetPort: 8080
-      name: backend-metrics
+      name: http
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend-monitor-metrics
+  labels:
+    release: "kube-prometheus-stack"
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  endpoints:
+    - port: http
+      interval: 30s
+      scrapeTimeout: 10s
+      path: "/actuator/prometheus"
