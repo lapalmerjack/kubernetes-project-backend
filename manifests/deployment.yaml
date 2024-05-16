@@ -69,4 +69,4 @@ spec:
       app: backend-service
   endpoints:
     - port: backend-metrics
-      path: /metrics
+      path: /actuator/prometheus
