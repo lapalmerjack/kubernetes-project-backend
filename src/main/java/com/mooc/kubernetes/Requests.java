@@ -55,7 +55,11 @@ public class Requests {
             throw new SQLException("Database is not available");
         }
 
+    }
 
+    @GetMapping("/frontend-health")
+    public ResponseEntity<String> ingressResponse() {
+        return new ResponseEntity<>("Frontend-connected", HttpStatus.OK);
     }
 
     @PostMapping("/add")
