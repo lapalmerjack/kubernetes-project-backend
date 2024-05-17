@@ -45,7 +45,8 @@ kind: Service
 metadata:
   name: backend-service
   annotations:
-    cloud.google.com/backend-config: '{"ports": {"8080":"backendconfig-healthcheck"}}'
+    cloud.google.com/neg: '{"ingress": true}'
+    beta.cloud.google.com/backend-config: '{"default": "backendconfig-healthcheck"}'
   labels:
     app: backend
 spec:
