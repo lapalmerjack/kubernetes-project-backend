@@ -59,7 +59,7 @@ public class Requests {
 
     @GetMapping("/frontend-health")
     public ResponseEntity<String> ingressResponse() {
-        return new ResponseEntity<>("Frontend-connected", HttpStatus.OK);
+        return new ResponseEntity<>("Frontend may connect", HttpStatus.OK);
     }
 
     @PostMapping("/add")

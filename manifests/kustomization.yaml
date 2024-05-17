@@ -6,6 +6,7 @@ resources:
   - statefulset.yaml
   - deployment.yaml
   - ingress.yaml
+  - backend-config.yaml
 images:
   - name: BACKEND/IMAGE
     newName: gcr.io/dwk-gke-416915/backend
