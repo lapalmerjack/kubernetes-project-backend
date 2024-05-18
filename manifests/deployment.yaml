@@ -17,12 +17,6 @@ spec:
           image: BACKEND/IMAGE
           ports:
             - containerPort: 8080
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 60
-            periodSeconds: 50
           env:
             - name: USERNAME
               valueFrom:
@@ -66,7 +60,7 @@ spec:
   healthCheck:
     timeoutSec: 15
     type: HTTP
-    requestPath: /frontend-health
+    requestPath: /health
     port: 8080
 ---
 apiVersion: monitoring.coreos.com/v1
