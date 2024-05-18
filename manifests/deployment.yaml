@@ -58,17 +58,6 @@ spec:
       targetPort: 8080
       name: http
 ---
-apiVersion: cloud.google.com/v1
-kind: BackendConfig
-metadata:
-  name: healthcheck
-spec:
-  healthCheck:
-    timeoutSec: 15
-    type: HTTP
-    requestPath: /health
-    port: 8080
----
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
