@@ -17,6 +17,12 @@ spec:
           image: BACKEND/IMAGE
           ports:
             - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 50
           env:
             - name: USERNAME
               valueFrom:
