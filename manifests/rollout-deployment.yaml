@@ -1,12 +1,24 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: backend
 spec:
-  replicas: 2
+  replicas: 6
   selector:
     matchLabels:
       app: backend
+  strategy:
+    canary:
+      steps:
+        - setWeight: 25
+        - pause:
+            duration: 30s
+        - setWeight: 50
+        - analysis:
+            templates:
+              - templateName: restart-rate
+        - pause:
+            duration: 30s
   template:
     metadata:
       labels:
@@ -39,6 +51,7 @@ spec:
                 configMapKeyRef:
                   name: database-configuration
                   key: database.url
+
 ---
 apiVersion: v1
 kind: Service
