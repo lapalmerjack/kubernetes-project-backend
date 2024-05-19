@@ -4,7 +4,7 @@ resources:
   - postgres-secrets.yaml
   - database-config.yaml
   - statefulset.yaml
-  - deployment.yaml
+  - rollout-deployment.yaml
   - analysistemplate.yaml
 images:
   - name: BACKEND/IMAGE
