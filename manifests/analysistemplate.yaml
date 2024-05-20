@@ -12,7 +12,7 @@ spec:
       failureCondition: result >= 1.5
       provider:
         prometheus:
-          address: http://kube-prometheus-stack-1602-prometheus.prometheus.svc.cluster.local:9090 
+          address: http://kube-prometheus-stack-prometheus.prometheus.svc.cluster.local:9090
           query: |
             sum(rate(container_cpu_usage_seconds_total{namespace="main"}[1m]))
 
