@@ -16,7 +16,7 @@ spec:
         - setWeight: 50
         - analysis:
             templates:
-              - templateName: restart-rate
+              - templateName: cpu-usage
         - pause:
             duration: 30s
   template:

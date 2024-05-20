@@ -1,22 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
-  name: restart-rate
+  name: cpu-usage
 spec:
   metrics:
-    - name: restart-rate
+    - name: cpu-usage
       initialDelay: 2m
       interval: 1m
-      count: 4
-      successCondition: result < 2
-      failureCondition: result >= 2
+      count: 10
+      successCondition: result < 1.5
+      failureCondition: result >= 1.5
       provider:
         prometheus:
           address: http://kube-prometheus-stack-1602-prometheus.prometheus.svc.cluster.local:9090 
           query: |
-            scalar(
-              sum(kube_pod_container_status_restarts_total{namespace="main", container="backend"}) -
-              sum(kube_pod_container_status_restarts_total{namespace="main", container="backend"} offset 2m)
-            )
+            sum(rate(container_cpu_usage_seconds_total{namespace="main"}[1m]))
 
         
