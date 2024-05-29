@@ -61,6 +61,7 @@ public class Requests {
     @PostMapping("/add")
     public ResponseEntity<NoteEntity> addToDo (@RequestBody NoteEntity toDo) {
         System.out.println(toDo.getNote() + " is being sent from frontend");
+        System.out.println(toDo.getIsDone() + " is the boolean");
 
         service.saveToDo(toDo);
 
