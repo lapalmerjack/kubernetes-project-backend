@@ -20,7 +20,7 @@ public class NoteEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private String note;
-  private Boolean isDone;
+  private boolean isDone;
 
 
   public void setDone() {
