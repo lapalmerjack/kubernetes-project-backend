@@ -68,7 +68,7 @@ public class Requests {
         return new ResponseEntity<>(toDo, HttpStatus.OK);
     }
 
-    @PutMapping("/isDone/?")
+    @PutMapping("/isDone/{id}")
     public ResponseEntity<NoteEntity> ChangeIfDoneOrNotDone(@PathVariable Long id) {
         NoteEntity updatedTask = service.updateTaskToDoneOrNotDone(id);
 
