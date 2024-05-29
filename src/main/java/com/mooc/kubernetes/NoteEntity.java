@@ -23,7 +23,7 @@ public class NoteEntity {
   private Boolean isDone;
 
 
-  public boolean setDone() {
-    return !isDone;
+  public void setDone() {
+    isDone = !isDone;
   }
 }

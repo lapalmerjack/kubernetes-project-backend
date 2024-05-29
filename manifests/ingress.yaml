@@ -36,3 +36,10 @@ spec:
                 name: backend-service
                 port:
                   number: 80
+          - path: /isDone/*
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-service
+                port:
+                  number: 80
