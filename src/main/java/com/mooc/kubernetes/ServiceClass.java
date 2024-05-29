@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 public class ServiceClass  {
@@ -39,6 +40,15 @@ public class ServiceClass  {
       } else {
         throw new RuntimeException("Length of the to do memo is too long");
       }
+
+    }
+
+    public NoteEntity updateTaskToDoneOrNotDone(Long id) {
+        NoteEntity noteToUpdate = noteRepository.findById(id).orElseThrow(() ->  new RuntimeException("Task not found"));
+        noteToUpdate.setDone();
+
+        return noteRepository.save(noteToUpdate);
+
 
     }
 
@@ -136,4 +146,5 @@ public class ServiceClass  {
             return null;
         }
     }
+
 }
