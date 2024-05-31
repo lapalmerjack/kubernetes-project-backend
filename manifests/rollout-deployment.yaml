@@ -54,12 +54,12 @@ spec:
             - name: NATS_URL
               valueFrom:
                 configMapKeyRef:
-                  name: telegram-config
+                  name: nats-config
                   key: nats.url
             - name: NATS_SUBJECT
               valueFrom:
                 configMapKeyRef:
-                  name: telegram-config
+                  name: nats-config
                   key: nats.subject
             - name: BOT_TOKEN
               valueFrom:
