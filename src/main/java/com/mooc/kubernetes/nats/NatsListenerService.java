@@ -30,7 +30,7 @@ public class NatsListenerService {
     @Value("${telegram.bot.token}")
     private String botToken;
 
-    @Value("${telegram.chat.id")
+    @Value("${telegram.chat.id}")
     private String chatId;
 
 
