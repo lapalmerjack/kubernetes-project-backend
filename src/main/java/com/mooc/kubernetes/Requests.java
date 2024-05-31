@@ -76,6 +76,7 @@ public class Requests {
             natsConnection.publish(natsSubject, message.getBytes());
 
         } catch (Exception e) {
+
             return new ResponseEntity<>("Failed to publish message", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

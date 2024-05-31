@@ -52,6 +52,7 @@ public class NatsListenerService {
 
     private void sendMessageToTelegram(String message) {
         String url = String.format("/bot%s/sendMessage", botToken);
+        System.out.println("SENDING MESSAGE TO TELEGRAM");
 
         webClient.post()
                 .uri(uriBuilder -> uriBuilder.path(url)
