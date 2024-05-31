@@ -7,7 +7,7 @@ spec:
     - name: cpu-usage
       initialDelay: 1m
       interval: 1m
-      count: 2
+      count: 1
       successCondition: result < 1.5
       failureCondition: result >= 1.5
       provider:

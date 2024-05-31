@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mooc.kubernetes.nats.NatsListenerService;
 import io.nats.client.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,9 +28,12 @@ public class Requests {
     @Value("${server.port}")
     private int serverPort;
 
+    private final NatsListenerService natsListenerService;
+
     @Autowired
-    public Requests(ServiceClass service) {
+    public Requests(ServiceClass service, NatsListenerService natsListenerService) {
         this.service = service;
+        this.natsListenerService = natsListenerService;
     }
 
     private List<NoteEntity> toDos = new ArrayList<>();
@@ -73,14 +77,7 @@ public class Requests {
     public ResponseEntity<?> addToDo (@RequestBody NoteEntity toDo) {
         String message = "New task added to list: " + toDo.getNote();
 
-        try {
-            natsConnection.publish(natsSubject, message.getBytes());
-
-        } catch (Exception e) {
-            System.out.println(Arrays.toString(e.getStackTrace()));
-
-            return new ResponseEntity<>("Failed to publish message", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        natsListenerService.publishMessageToNats(message);
 
         System.out.println(toDo.getNote() + " is being sent from frontend");
 
@@ -96,12 +93,8 @@ public class Requests {
 
         String message = "Task " + updatedTask.getNote() + " has been updated to " + updatedTask.getIsDone();
 
-        try {
-            natsConnection.publish(natsSubject, message.getBytes());
+        natsListenerService.publishMessageToNats(message);
 
-        } catch (Exception e) {
-            return new ResponseEntity<>("Failed to publish message", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
 
         return new ResponseEntity<>(updatedTask, HttpStatus.OK);
     }

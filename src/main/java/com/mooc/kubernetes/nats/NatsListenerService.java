@@ -35,24 +35,42 @@ public class NatsListenerService {
 
 
     private final WebClient webClient;
+    private Connection natsConnection;
 
     public NatsListenerService(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("https://api.telegram.org").build();
     }
 
     @PostConstruct
-    public void init() throws IOException, InterruptedException {
-        Connection natsConnection = Nats.connect(natsUrl);
-        Dispatcher dispatcher = natsConnection.createDispatcher(msg -> {
-            String message = new String(msg.getData());
-            sendMessageToTelegram(message);
-        });
-        dispatcher.subscribe(natsSubject);
+    public void init() {
+        try {
+            this.natsConnection = Nats.connect(natsUrl);
+            Dispatcher dispatcher = natsConnection.createDispatcher(msg -> {
+                String message = new String(msg.getData());
+                logger.info("Received message: {}", message);
+                sendMessageToTelegram(message);
+            });
+            dispatcher.subscribe(natsSubject);
+            logger.info("Subscribed to NATS subject: {}", natsSubject);
+        } catch (IOException | InterruptedException e) {
+            logger.error("Failed to connect to NATS server", e);
+            throw new RuntimeException("Failed to connect to NATS server", e);
+        }
     }
+
+    public void publishMessageToNats(String message) {
+        try {
+            natsConnection.publish(natsSubject, message.getBytes());
+            logger.info("Published message to NATS: {}", message);
+        } catch (Exception e) {
+            logger.error("Failed to publish message to NATS", e);
+        }
+    }
+
 
     private void sendMessageToTelegram(String message) {
         String url = String.format("/bot%s/sendMessage", botToken);
-        System.out.println("SENDING MESSAGE TO TELEGRAM");
+        logger.info("Sending message to BOT");
 
         webClient.post()
                 .uri(uriBuilder -> uriBuilder.path(url)
