@@ -5,9 +5,9 @@ metadata:
 spec:
   metrics:
     - name: cpu-usage
-      initialDelay: 2m
+      initialDelay: 1m
       interval: 1m
-      count: 10
+      count: 2
       successCondition: result < 1.5
       failureCondition: result >= 1.5
       provider:

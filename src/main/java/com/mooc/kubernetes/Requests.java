@@ -2,6 +2,7 @@ package com.mooc.kubernetes;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.nats.client.Connection;
@@ -76,6 +77,7 @@ public class Requests {
             natsConnection.publish(natsSubject, message.getBytes());
 
         } catch (Exception e) {
+            System.out.println(Arrays.toString(e.getStackTrace()));
 
             return new ResponseEntity<>("Failed to publish message", HttpStatus.INTERNAL_SERVER_ERROR);
         }
