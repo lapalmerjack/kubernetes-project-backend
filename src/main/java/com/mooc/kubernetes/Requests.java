@@ -3,6 +3,8 @@ package com.mooc.kubernetes;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.nats.client.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Status;
@@ -34,6 +36,14 @@ public class Requests {
     @Autowired
     private DatabaseHealthIndicator databaseHealthIndicator;
 
+    @Value("${nats.url}")
+    private String natsUrl;
+
+    @Value("${nats.subject")
+    private String natsSubject;
+
+    private Connection natsConnection;
+
 
 
     @GetMapping("/")
@@ -59,9 +69,17 @@ public class Requests {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<NoteEntity> addToDo (@RequestBody NoteEntity toDo) {
+    public ResponseEntity<?> addToDo (@RequestBody NoteEntity toDo) {
+        String message = "New task added to list: " + toDo.getNote();
+
+        try {
+            natsConnection.publish(natsSubject, message.getBytes());
+
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to publish message", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         System.out.println(toDo.getNote() + " is being sent from frontend");
-        System.out.println(toDo.getIsDone() + " is the boolean");
 
         service.saveToDo(toDo);
 
@@ -69,8 +87,18 @@ public class Requests {
     }
 
     @PutMapping("/isDone/{id}")
-    public ResponseEntity<NoteEntity> ChangeIfDoneOrNotDone(@PathVariable Long id) {
+    public ResponseEntity<?> ChangeIfDoneOrNotDone(@PathVariable Long id) {
+
         NoteEntity updatedTask = service.updateTaskToDoneOrNotDone(id);
+
+        String message = "Task " + updatedTask.getNote() + " has been updated to " + updatedTask.getIsDone();
+
+        try {
+            natsConnection.publish(natsSubject, message.getBytes());
+
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to publish message", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         return new ResponseEntity<>(updatedTask, HttpStatus.OK);
     }

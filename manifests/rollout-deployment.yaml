@@ -51,6 +51,26 @@ spec:
                 configMapKeyRef:
                   name: database-configuration
                   key: database.url
+            - name: NATS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: telegram-config
+                  key: nats.url
+            - name: NATS_SUBJECT
+              valueFrom:
+                configMapKeyRef:
+                  name: telegram-config
+                  key: nats.subject
+            - name: BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-secrets
+                  key: bot-token
+            - name: CHAT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-secrets
+                  key: chat-id
 
 ---
 apiVersion: v1
