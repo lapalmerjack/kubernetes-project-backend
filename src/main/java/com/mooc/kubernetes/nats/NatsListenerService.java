@@ -70,7 +70,7 @@ public class NatsListenerService {
 
     private void sendMessageToTelegram(String message) {
         String url = String.format("/bot%s/sendMessage", botToken);
-        logger.info("Sending message to BOT");
+        logger.info("Sending message to " + chatId);
 
         webClient.post()
                 .uri(uriBuilder -> uriBuilder.path(url)
