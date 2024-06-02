@@ -11,4 +11,4 @@ resources:
   - telegram-secrets.yaml
 images:
   - name: BACKEND/IMAGE
-    newName: gcr.io/dwk-gke-416915/backend
+    newName: gcr.io/dwk-gke-416915/backend:main-0d5844ab22796f0e571912d19da2962392192bbf
