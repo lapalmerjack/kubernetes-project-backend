@@ -34,12 +34,6 @@ public class Requests {
 
     private static final Logger logger = LoggerFactory.getLogger(Requests.class);
 
-    @Autowired
-    public Requests(ServiceClass service) {
-        this.service = service;
-
-    }
-
     private List<NoteEntity> toDos = new ArrayList<>();
 
     @Autowired
@@ -48,8 +42,18 @@ public class Requests {
     @Value("${nats.url}")
     private String natsUrl;
 
-    @Value("${nats.subject")
+    @Value("${nats.subject}")
     private String natsSubject;
+
+    private final NatsService natsService;
+
+    @Autowired
+    public Requests(ServiceClass service, NatsService natsService) {
+        this.service = service;
+        this.natsService = natsService
+
+    }
+
 
 
 
@@ -84,7 +88,7 @@ public class Requests {
         logger.info("{} is being sent from frontend", toDo.getId());
 
         service.saveToDo(toDo);
-        publishMessageToNats(message);
+        natsService.publishMessageToNats(message);
 
         return new ResponseEntity<>(toDo, HttpStatus.OK);
     }
@@ -96,7 +100,7 @@ public class Requests {
 
         String message = "Task " + updatedTask.getNote() + " has been updated to " + updatedTask.getIsDone();
 
-        publishMessageToNats(message);
+        natsService.publishMessageToNats(message);
         logger.info("Task {} has been updated to {}", updatedTask.getNote(), updatedTask.getIsDone());
 
 
@@ -128,14 +132,5 @@ public class Requests {
     }
 
 
-    public void publishMessageToNats(String message) {
-        try {
-            logger.info("Connecting to NATS server at {}", natsUrl);
-            Connection natsConnection = Nats.connect(natsUrl);
-            natsConnection.publish(natsSubject, message.getBytes());
-            logger.info("Published message to NATS: {}", message);
-        } catch (Exception e) {
-            logger.error("Failed to publish message to NATS", e);
-        }
-    }
+
 }

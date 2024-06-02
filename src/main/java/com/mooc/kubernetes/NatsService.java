@@ -22,6 +22,8 @@ public class NatsService {
 
     private static final Logger logger = LoggerFactory.getLogger(NatsService.class);
 
+    private Connection natsConnection;
+
 
 
 
@@ -35,6 +37,17 @@ public class NatsService {
             throw new RuntimeException("Failed to connect to NATS server", e);
         }
         logger.info("Connected to Nats Server");
+    }
+
+
+    public void publishMessageToNats(String message) {
+        try {
+
+            natsConnection.publish(natsSubject, message.getBytes());
+            logger.info("Published message to NATS: {}", message);
+        } catch (Exception e) {
+            logger.error("Failed to publish message to NATS", e);
+        }
     }
 
 }
