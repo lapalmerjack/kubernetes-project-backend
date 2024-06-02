@@ -31,7 +31,7 @@ public class NatsService {
     public void init() {
         try {
             logger.info("Connecting to NATS server at {}", natsUrl);
-            Connection natsConnection = Nats.connect(natsUrl);
+            natsConnection = Nats.connect(natsUrl);
         } catch (IOException | InterruptedException e) {
             logger.error("Failed to connect to NATS server", e);
             throw new RuntimeException("Failed to connect to NATS server", e);
