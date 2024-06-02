@@ -17,7 +17,7 @@ public class NatsService {
     @Value("${nats.url}")
     private String natsUrl;
 
-    @Value("${nats.subject")
+    @Value("${nats.subject}")
     private String natsSubject;
 
     private static final Logger logger = LoggerFactory.getLogger(NatsService.class);
