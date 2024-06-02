@@ -31,7 +31,6 @@ public class Requests {
     private int serverPort;
 
 
-    private Connection natsConnection;
 
     private static final Logger logger = LoggerFactory.getLogger(Requests.class);
 
@@ -131,6 +130,8 @@ public class Requests {
 
     public void publishMessageToNats(String message) {
         try {
+            logger.info("Connecting to NATS server at {}", natsUrl);
+            Connection natsConnection = Nats.connect(natsUrl);
             natsConnection.publish(natsSubject, message.getBytes());
             logger.info("Published message to NATS: {}", message);
         } catch (Exception e) {
