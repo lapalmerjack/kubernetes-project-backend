@@ -50,7 +50,7 @@ public class Requests {
     @Autowired
     public Requests(ServiceClass service, NatsService natsService) {
         this.service = service;
-        this.natsService = natsService
+        this.natsService = natsService;
 
     }
 
