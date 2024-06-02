@@ -2,11 +2,11 @@ package com.mooc.kubernetes;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import com.mooc.kubernetes.nats.NatsListenerService;
 import io.nats.client.Connection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Status;
@@ -28,12 +28,15 @@ public class Requests {
     @Value("${server.port}")
     private int serverPort;
 
-    private final NatsListenerService natsListenerService;
+
+    private Connection natsConnection;
+
+    private static final Logger logger = LoggerFactory.getLogger(Requests.class);
 
     @Autowired
-    public Requests(ServiceClass service, NatsListenerService natsListenerService) {
+    public Requests(ServiceClass service) {
         this.service = service;
-        this.natsListenerService = natsListenerService;
+
     }
 
     private List<NoteEntity> toDos = new ArrayList<>();
@@ -47,9 +50,6 @@ public class Requests {
     @Value("${nats.subject")
     private String natsSubject;
 
-    private Connection natsConnection;
-
-
 
     @GetMapping("/")
     public String response() {
@@ -60,12 +60,11 @@ public class Requests {
     @GetMapping("/health")
     public void readiness() throws SQLException {
         if(databaseHealthIndicator.health().getStatus().equals(Status.UP)) {
-            System.out.println("HEALTH CHECK PASSED");
+            logger.info("Health check passed!");
             return;
         } else {
             throw new SQLException("Database is not available");
         }
-
     }
 
     @GetMapping("/frontend-health")
@@ -77,11 +76,12 @@ public class Requests {
     public ResponseEntity<?> addToDo (@RequestBody NoteEntity toDo) {
         String message = "New task added to list: " + toDo.getNote();
 
-        natsListenerService.publishMessageToNats(message);
 
-        System.out.println(toDo.getNote() + " is being sent from frontend");
+
+        logger.info("{} is being sent from frontend", toDo.getId());
 
         service.saveToDo(toDo);
+        publishMessageToNats(message);
 
         return new ResponseEntity<>(toDo, HttpStatus.OK);
     }
@@ -93,7 +93,8 @@ public class Requests {
 
         String message = "Task " + updatedTask.getNote() + " has been updated to " + updatedTask.getIsDone();
 
-        natsListenerService.publishMessageToNats(message);
+        publishMessageToNats(message);
+        logger.info("Task {} has been updated to {}", updatedTask.getNote(), updatedTask.getIsDone());
 
 
         return new ResponseEntity<>(updatedTask, HttpStatus.OK);
@@ -104,7 +105,7 @@ public class Requests {
 
         List<NoteEntity> notes = service.getAllNotes();
 
-        System.out.println("Retrieved todos");
+
 
 
         return new ResponseEntity<>(notes, HttpStatus.OK);
@@ -121,5 +122,15 @@ public class Requests {
 
         return new ResponseEntity<>(image, header, HttpStatus.OK);
 
+    }
+
+
+    public void publishMessageToNats(String message) {
+        try {
+            natsConnection.publish(natsSubject, message.getBytes());
+            logger.info("Published message to NATS: {}", message);
+        } catch (Exception e) {
+            logger.error("Failed to publish message to NATS", e);
+        }
     }
 }
