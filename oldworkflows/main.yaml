@@ -53,11 +53,15 @@ jobs:
           curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
           chmod u+x ./kustomize
 
-      - name: Use right image
-        uses: kustomize edit set image gcr.io/$PROJECT_ID/$IMAGE=gcr.io/$PROJECT_ID/$IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
-
-      - name: commit kustomization.yaml to Github
-        run:  EndBug/add-and-commit@v9
-        with:
-          add: "kustomization.yaml"
-          message: New version released ${{ github.sha }}
+      - name: Deploy
+        run: |
+          cd manifests
+          if ! kubectl get namespace ${GITHUB_REF#refs/heads/} &> /dev/null; then
+          kubectl create namespace ${GITHUB_REF#refs/heads/}
+          fi
+          kubectl config set-context --current --namespace=${GITHUB_REF#refs/heads/}
+          kustomize edit set namespace ${GITHUB_REF#refs/heads/}
+          kustomize edit set image gcr.io/$PROJECT_ID/$IMAGE=gcr.io/$PROJECT_ID/$IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
+          kubectl apply -k .
+          kubectl rollout status deployment $IMAGE
+          kubectl get services -o wide
