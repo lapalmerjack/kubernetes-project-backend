@@ -54,9 +54,11 @@ jobs:
           chmod u+x ./kustomize
 
       - name: Use right image
-        run: ./manifests/kustomize edit set image gcr.io/$PROJECT_ID/$IMAGE=gcr.io/$PROJECT_ID/$IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
+        run: |
+         cd manifests 
+         kustomize edit set image gcr.io/$PROJECT_ID/$IMAGE=gcr.io/$PROJECT_ID/$IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
 
-      - name: commit ./manifests/kustomization.yaml to Github
+      - name: commit kustomization.yaml to Github
         uses:  EndBug/add-and-commit@v9
         with:
           add: "kustomization.yaml"
