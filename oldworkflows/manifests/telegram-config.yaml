@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: nats-config
-data:
-  nats.url: "nats://my-nats.main.svc.cluster.local:4222"
-  nats.subject: "backend.events"
