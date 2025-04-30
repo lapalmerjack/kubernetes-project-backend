@@ -4,9 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.nats.client.Connection;
-import io.nats.client.Nats;
-import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +52,6 @@ public class Requests {
     }
 
 
-
-
-
     @GetMapping("/")
     public String response() {
 
@@ -68,7 +62,6 @@ public class Requests {
     public void readiness() throws SQLException {
         if(databaseHealthIndicator.health().getStatus().equals(Status.UP)) {
             logger.info("FIGHT THE POWER");
-            return;
         } else {
             throw new SQLException("Database is not available");
         }
@@ -82,9 +75,6 @@ public class Requests {
     @PostMapping("/add")
     public ResponseEntity<?> addToDo (@RequestBody NoteEntity toDo) {
         String message = "New task added to list: " + toDo.getNote();
-
-
-
         logger.info("{} is being sent from frontend", toDo.getId());
 
         service.saveToDo(toDo);
@@ -111,10 +101,6 @@ public class Requests {
     public ResponseEntity<List<NoteEntity>> getToDos () {
 
         List<NoteEntity> notes = service.getAllNotes();
-
-
-
-
         return new ResponseEntity<>(notes, HttpStatus.OK);
     }
 

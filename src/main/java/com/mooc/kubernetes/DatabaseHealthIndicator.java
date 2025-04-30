@@ -18,7 +18,8 @@ public class DatabaseHealthIndicator implements  HealthIndicator{
     @Override
     public Health health() {
         try (Connection connection = dataSource.getConnection()) {
-            if (connection.isValid(1)) { // Check if the connection is valid
+            if (connection.isValid(1)) {// Check if the connection is valid
+                System.out.println("Backend connected");
                 return Health.up().build();
             } else {
                 return Health.down().withDetail("error", "Database connection is not valid").build();
