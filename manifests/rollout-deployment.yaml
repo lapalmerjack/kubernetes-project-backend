@@ -82,8 +82,8 @@ metadata:
   labels:
     app: backend
 spec:
+  type: NodePort
   selector:
-    type: NodePort
     app: backend
   ports:
     - port: 80
