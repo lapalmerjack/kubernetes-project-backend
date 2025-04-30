@@ -9,7 +9,8 @@ resources:
 - ingress.yaml
 - telegram-config.yaml
 - telegram-secrets.yaml
+- backendconfig.yaml
 images:
 - name: BACKEND/IMAGE
-  newName: gcr.io/dwk-gke-416915/backend
+  newName: gcr.io/dwk-gke-450416/backend
 

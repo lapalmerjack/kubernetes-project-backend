@@ -6,5 +6,5 @@ spec:
   healthCheck:
     timeoutSec: 15
     type: HTTP
-    requestPath: /health
+    requestPath: /actuator/health
     port: 8080

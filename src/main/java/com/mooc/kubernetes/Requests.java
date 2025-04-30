@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.health.Status;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -56,15 +55,6 @@ public class Requests {
     public String response() {
 
         return "Server started in port " + serverPort;
-    }
-
-    @GetMapping("/health")
-    public void readiness() throws SQLException {
-        if(databaseHealthIndicator.health().getStatus().equals(Status.UP)) {
-            logger.info("FIGHT THE POWER");
-        } else {
-            throw new SQLException("Database is not available");
-        }
     }
 
     @GetMapping("/frontend-health")

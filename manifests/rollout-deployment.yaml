@@ -3,7 +3,7 @@ kind: Rollout
 metadata:
   name: backend
 spec:
-  replicas: 5
+  replicas: 2
   selector:
     matchLabels:
       app: backend
@@ -31,7 +31,7 @@ spec:
             - containerPort: 8080
           readinessProbe:
             httpGet:
-              path: /health
+              path: /actuator/health
               port: 8080
             initialDelaySeconds: 60
             periodSeconds: 50
@@ -78,8 +78,7 @@ kind: Service
 metadata:
   name: backend-service
   annotations:
-    cloud.google.com/neg: '{"ingress": true}'
-    beta.cloud.google.com/backend-config: '{"default" :"healthcheck"}'
+    cloud.google.com/backend-config: '{"default" :"healthcheck"}'
   labels:
     app: backend
 spec:
