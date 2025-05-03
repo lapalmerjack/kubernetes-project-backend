@@ -4,7 +4,7 @@ resources:
 - postgres-secrets.yaml
 - database-config.yaml
 - statefulset.yaml
-- rollout-deployment.yaml
+- deployment.yaml
 - analysistemplate.yaml
 - ingress.yaml
 - telegram-config.yaml
