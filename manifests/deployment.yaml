@@ -11,8 +11,8 @@ spec:
     metadata:
       annotations:
         linkerd.io/inject: enabled   # <-- Add this line
-        labels:
-          app: backend
+      labels:
+        app: backend
     spec:
       containers:
         - name: backend
