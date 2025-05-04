@@ -16,7 +16,7 @@ RUN mvn clean install -DskipTests=true
 # Use the OpenJDK image as the final image
 FROM openjdk:
 
-UN apt-get update && apt-get install -y net-tools iproute2 lsof
+RUN apt-get update && apt-get install -y net-tools iproute2 lsof
 
 # Set the working directory
 WORKDIR /app
