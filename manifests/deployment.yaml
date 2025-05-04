@@ -9,8 +9,10 @@ spec:
       app: backend
   template:
     metadata:
-      labels:
-        app: backend
+      annotations:
+        linkerd.io/inject: enabled   # <-- Add this line
+        labels:
+          app: backend
     spec:
       containers:
         - name: backend
