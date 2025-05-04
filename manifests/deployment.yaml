@@ -12,7 +12,7 @@ spec:
       annotations:
         linkerd.io/inject: enabled
         config.linkerd.io/proxy-wait-before-ready: "true"
-        config.linkerd.io/opaque-ports: "5432"
+        config.linkerd.io/opaque-ports: "4222"
       labels:
         app: backend
     spec:
