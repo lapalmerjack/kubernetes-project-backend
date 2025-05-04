@@ -10,7 +10,9 @@ spec:
   template:
     metadata:
       annotations:
-        linkerd.io/inject: enabled   # <-- Add this line
+        linkerd.io/inject: enabled
+        config.linkerd.io/proxy-wait-before-ready: "true"
+        config.linkerd.io/opaque-ports: "5432"
       labels:
         app: backend
     spec:
@@ -23,8 +25,9 @@ spec:
             httpGet:
               path: /actuator/health
               port: 8080
-            initialDelaySeconds: 60
-            periodSeconds: 50
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
           env:
             - name: USERNAME
               valueFrom:
