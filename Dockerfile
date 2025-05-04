@@ -14,7 +14,7 @@ COPY src ./src
 RUN mvn clean install -DskipTests=true
 
 # Use the OpenJDK image as the final image
-FROM openjdk:
+FROM openjdk:17
 
 RUN apt-get update && apt-get install -y net-tools iproute2 lsof
 
